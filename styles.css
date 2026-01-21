@@ -1,0 +1,1343 @@
+:root {
+    /* -- Colors -- */
+    --background: #ffffff;
+    --foreground: #030213;
+    
+    /* UI Grays */
+    --gray-50: #f9fafb;
+    --gray-100: #f3f4f6;
+    --gray-200: #e5e7eb;
+    --gray-300: #d1d5db;
+    --gray-400: #9ca3af;
+    --gray-500: #6b7280;
+    
+    /* Brand Colors */
+    --primary-dark: #2c3e50; /* Keep legacy for now or map to primary */
+    --primary: #030213;
+    --accent-blue: #3b82f6; /* Blue 500 */
+    --accent-red: #ef4444; /* Red 500 */
+    
+    /* Layout */
+    --header-bg: #ffffff; /* Header is white in reference? Or gray-50 */
+    --bg-color: #f9fafb; /* App bg */
+    
+    /* Cards - Resized to fit text */
+    --card-width: 260px; /* Increased from 240px */
+    --card-height: 364px; /* Increased from 336px (1.4 ratio) */
+    --card-bg: #ffffff;
+    
+    /* Fonts */
+    --font-serif: 'SimSun', 'Songti SC', serif;
+    --font-ui: 'Segoe UI', 'Microsoft YaHei', sans-serif;
+    
+    /* Shadows */
+    --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    
+    /* Radius */
+    --radius-xl: 12px;
+    --radius-lg: 8px;
+    --radius-md: 6px;
+    --radius-full: 9999px;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    font-family: var(--font-ui);
+    margin: 0;
+    padding: 0;
+    background-color: var(--bg-color);
+    height: 100vh;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    color: var(--foreground);
+}
+
+h1, h2, h3, h4 {
+    font-family: var(--font-ui); /* Fresh font for headers */
+    font-weight: 900; /* Heavy weight */
+}
+
+.app-container {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    width: 100vw;
+}
+
+/* --- App Header --- */
+.app-header {
+    flex: 0 0 auto;
+    background: #111827; /* gray-900 */
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem 1.5rem; /* px-6 py-4 */
+    box-shadow: var(--shadow-lg);
+    z-index: 100;
+    border-bottom: none;
+}
+
+.header-left {
+    display: flex;
+    align-items: center;
+    gap: 1rem; /* gap-4 */
+}
+
+.header-left h1 {
+    margin: 0;
+    font-size: 1.5rem; /* text-2xl */
+    font-weight: 900; /* font-black */
+}
+
+.header-separator {
+    height: 1.5rem; /* h-6 */
+    width: 1px;
+    background: rgba(255,255,255,0.3);
+}
+
+.room-name-display {
+    font-weight: 500; /* font-medium */
+    color: white;
+    font-size: 1.125rem; /* text-lg */
+    margin: 0;
+}
+
+.header-center {
+    /* Legacy container - now right aligned controls */
+    display: flex;
+    align-items: center;
+    gap: 0.75rem; /* gap-3 */
+    background: transparent;
+    padding: 0;
+    border: none;
+}
+
+/* Header Buttons */
+.btn-primary-blue {
+    background: #2563eb; /* blue-600 */
+    color: white;
+    border: none;
+    border-radius: var(--radius-md);
+    padding: 0.5rem 1rem;
+    font-size: 0.875rem; /* text-sm */
+    font-weight: 500;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    transition: background-color 0.2s;
+}
+.btn-primary-blue:hover {
+    background: #1d4ed8; /* blue-700 */
+}
+
+.btn-danger-red {
+    background: #dc2626; /* red-600 */
+    color: white;
+    border: none;
+    border-radius: var(--radius-md);
+    padding: 0.5rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.2s;
+}
+.btn-danger-red:hover {
+    background: #b91c1c; /* red-700 */
+}
+
+/* Header Select */
+.room-select {
+    width: 12rem; /* w-48 */
+    background: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.2);
+    color: white;
+    padding: 0.5rem;
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    outline: none;
+}
+.room-select:hover {
+    background: rgba(255,255,255,0.2);
+}
+.room-select option {
+    background: #111827;
+    color: white;
+}
+
+.header-center button {
+    padding: 5px 12px;
+    background: var(--accent-blue);
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.header-center button:hover {
+    background: #3498db;
+}
+
+.danger-icon {
+    background: var(--accent-red) !important;
+}
+
+/* --- Main Content Layout --- */
+.main-content {
+    flex: 1;
+    display: flex;
+    overflow: hidden;
+    position: relative;
+}
+
+.empty-state {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+    font-size: 1.5rem;
+    color: #7f8c8d;
+}
+
+/* 3-Column Layout */
+.game-layout {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+
+/* --- Left: Character Column --- */
+.character-column {
+    flex: 0 0 320px; /* Reference uses w-80 (20rem = 320px) */
+    background: white;
+    border-right: 1px solid var(--gray-200);
+    display: flex;
+    flex-direction: column;
+    padding: 0; /* Remove padding here, use inner */
+    overflow: hidden;
+    box-shadow: var(--shadow-sm);
+    z-index: 10;
+}
+
+.column-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem; /* p-4 */
+    background: var(--gray-50);
+    border-bottom: 1px solid var(--gray-200);
+    margin-bottom: 0;
+}
+
+.column-header h3 { 
+    margin: 0; 
+    font-size: 1.125rem; /* text-lg */
+    font-weight: 900; /* font-black */
+}
+
+/* Add Char Button Style from reference (small icon btn) */
+#add-char-btn {
+    width: 32px;
+    height: 32px;
+    background: white;
+    border: 1px solid var(--gray-300);
+    border-radius: var(--radius-md);
+    color: var(--primary);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+#add-char-btn:hover {
+    background: var(--gray-100);
+}
+
+.character-list-vertical {
+    flex: 1;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem; /* space-y-3 */
+    padding: 1rem; /* p-4 */
+    background: var(--gray-50);
+}
+
+/* Character Card (Person UI) - Refactored to Vertical Stack */
+.character-card-container {
+    background: white;
+    border: 1px solid var(--gray-200);
+    border-radius: var(--radius-xl);
+    box-shadow: var(--shadow-sm);
+    display: flex;
+    flex-direction: column; /* Vertical Stack */
+    transition: all 0.2s;
+    flex-shrink: 0;
+    margin-bottom: 0; /* gap handles spacing */
+    width: 100%;
+    overflow: hidden;
+    cursor: pointer;
+    position: relative;
+}
+
+.character-card-container.selected {
+    border-color: var(--accent-blue);
+    box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.5); /* ring-2 ring-blue-500 */
+}
+
+.character-card-container:hover {
+    box-shadow: var(--shadow-md);
+}
+
+.character-card-container:hover .delete-char-btn {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+/* Header Section of Card */
+.char-header-section {
+    padding: 1rem; /* p-4 */
+    border-bottom: 1px solid var(--gray-100);
+    background: linear-gradient(to right, var(--gray-50), white);
+    display: flex;
+    align-items: center;
+    gap: 0.75rem; /* gap-3 */
+    position: relative;
+}
+
+/* Character Avatar & UI */
+.char-avatar-container {
+    position: relative;
+    width: 64px; /* w-16 */
+    height: 64px; /* h-16 */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: var(--gray-100); /* Fallback */
+    border-radius: 50%; /* Circle shape */
+    overflow: hidden; /* Clip content to circle */
+    border: 2px solid white; /* Optional ring */
+    box-shadow: var(--shadow-sm);
+}
+
+.avatar-emoji {
+    font-size: 32px;
+    line-height: 1;
+    z-index: 2;
+    pointer-events: none; /* Let clicks pass to container */
+}
+
+/* Hide old avatar parts */
+.avatar-head, .avatar-body {
+    display: none;
+}
+
+/* Character Info Layout */
+.char-info-section {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 4px;
+}
+
+.char-meta-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.75rem; /* text-xs */
+    color: var(--gray-500);
+    flex-wrap: wrap;
+}
+
+.revealed-count {
+    color: var(--accent-blue);
+    font-weight: 600;
+}
+
+.char-name {
+    font-weight: 700; /* font-bold */
+    font-size: 1rem; /* text-base */
+    color: var(--primary);
+    margin: 0;
+    cursor: text;
+    border: 1px solid transparent;
+    border-radius: var(--radius-md);
+    padding: 2px 4px;
+}
+.char-name:hover {
+    background: rgba(0,0,0,0.05);
+}
+
+.char-meta {
+    font-size: 0.75rem; /* text-xs */
+    color: var(--gray-500);
+    margin-top: 2px;
+}
+
+/* Delete Button (Group Hover) - Adjust position for circle */
+.delete-char-btn {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background-color: #ef4444; /* Red */
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1rem;
+    cursor: pointer;
+    opacity: 0; /* Hidden by default */
+    pointer-events: none; /* Prevent clicks when hidden */
+    transition: opacity 0.2s;
+    z-index: 10;
+}
+
+.delete-char-btn:hover {
+    background-color: #dc2626;
+}
+.char-avatar-container:hover .delete-char-btn {
+    opacity: 1;
+}
+
+/* Hand Section */
+.char-hand-section {
+    padding: 0.75rem; /* p-3 */
+    background: white;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem; /* gap-2 */
+    min-height: 60px;
+}
+
+
+/* --- Avatar Components --- */
+.avatar-head {
+    position: absolute;
+    top: 0;
+    width: 24px; /* w-6 */
+    height: 24px; /* h-6 */
+    border-radius: 50%;
+    z-index: 2;
+}
+
+.avatar-body {
+    position: absolute;
+    bottom: 0;
+    width: 0;
+    height: 0;
+    border-left: 16px solid transparent; /* border-[8px] roughly means 8px border width, total 16px wide? No. 
+                                            Tailwind border-[8px] usually means all sides. 
+                                            But CharacterAvatar.tsx uses specific logic: 
+                                            border-l-transparent border-r-transparent ${s.body}
+                                            where s.body is border-[8px].
+                                            If border width is 8px, triangle base is 16px. Height is 8px? 
+                                            Actually borders create triangles differently. 
+                                            Let's estimate to match w-16 container (64px).
+                                            Md size in TSX: container w-16 (64px), head w-6 (24px).
+                                            Body border-[8px]. 
+                                            Wait, border-[8px] on a w-0 h-0 div makes a 16x16 box if all sides.
+                                            But border-l-transparent means only bottom/top visible?
+                                            Reference code: border-bottom-color: color. 
+                                            So it's a bottom border triangle.
+                                            If border-width is 8px, height is 8px. That's very small.
+                                            Let's make it look like the previous one but positioned correctly.
+                                            Container is 64px. Head is 24px.
+                                            Let's make body bigger. */
+    border-right: 16px solid transparent;
+    border-bottom: 32px solid; /* Color set inline */
+    z-index: 1;
+}
+
+.char-mini-card {
+    width: 50px;
+    height: 70px;
+    border-radius: 4px;
+    cursor: pointer;
+    position: relative;
+    box-shadow: var(--shadow-sm);
+    transition: transform 0.2s;
+    border: 1px solid var(--gray-200);
+}
+
+.char-mini-card:hover {
+    transform: scale(1.1);
+    z-index: 5;
+    box-shadow: var(--shadow-md);
+}
+
+.char-mini-card.revealed {
+    background: white;
+    border: 1px solid #ccc;
+    font-size: 8px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 2px;
+    color: #333;
+}
+
+.char-mini-card:not(.revealed) {
+    background: linear-gradient(135deg, #2c3e50, #000);
+    border: 1px solid white;
+}
+
+/* Tooltip (Refined) */
+#tooltip-portal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 99999; /* Highest Z-Index */
+}
+
+.tooltip {
+    position: absolute; /* Relative to viewport via portal or JS positioning */
+    background: var(--primary); /* Use primary (black/dark) */
+    color: white; /* Primary foreground */
+    padding: 0.5rem 0.75rem; /* px-3 py-1.5 */
+    border-radius: var(--radius-md); /* rounded-md */
+    width: max-content;
+    max-width: 260px;
+    font-size: 0.75rem; /* text-xs */
+    pointer-events: none;
+    box-shadow: var(--shadow-md);
+    line-height: 1.4;
+    white-space: normal;
+    text-align: center; /* Text balance */
+    animation: tooltip-fade-in 0.2s ease-out;
+    opacity: 0;
+    transition: opacity 0.2s;
+}
+
+.tooltip.visible {
+    opacity: 1;
+}
+
+.tooltip::after {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: var(--primary) transparent transparent transparent;
+}
+
+@keyframes tooltip-fade-in {
+    from { opacity: 0; transform: translateX(-50%) scale(0.95); }
+    to { opacity: 1; transform: translateX(-50%) scale(1); }
+}
+.char-mini-card:hover .tooltip { display: block; }
+
+.char-mini-card:hover {
+    transform: scale(1.2);
+    z-index: 1000; /* Ensure card itself is on top too */
+}
+
+/* Unrevealed Text Style */
+.unrevealed-text {
+    color: transparent; /* Remove text '未显化' */
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #2c3e50; /* Fallback */
+    background-size: cover;
+    background-position: center;
+    border-radius: 2px;
+    overflow: hidden; 
+}
+
+
+/* --- Middle: Table Section (Deck & Pile) --- */
+.table-section {
+    flex: 1; /* Flexible width */
+    background: white; /* No longer #dcdde1 */
+    display: flex;
+    flex-direction: column;
+    padding: 0; /* Remove padding */
+    gap: 0; /* Remove gap */
+    overflow: hidden;
+}
+
+/* Top Half: 3D Deck Area */
+.deck-pile-panel {
+    flex: 0 0 50%; /* h-1/2 */
+    background: linear-gradient(to bottom, var(--gray-100), var(--gray-200)); /* bg-gradient-to-b from-gray-100 to-gray-200 */
+    border-radius: 0; /* Remove radius */
+    padding: 2rem; /* p-8 */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    box-shadow: none; /* Remove shadow */
+    border-bottom: 2px solid var(--gray-300); /* border-b-2 border-gray-300 */
+    min-height: 0;
+}
+
+.panel-header {
+    /* Legacy header - hidden or repurposed */
+    display: none; 
+}
+
+/* New Deck Info Section (Count + Random Btn) */
+.deck-info-section {
+    display: flex;
+    gap: 0.75rem; /* gap-3 */
+    align-items: center;
+    margin-top: 1.5rem; /* mb-6 equivalent relative to deck */
+}
+
+.deck-count-text {
+    font-size: 1.125rem; /* text-lg */
+    font-weight: 700; /* font-bold */
+    color: #374151; /* text-gray-700 */
+    margin: 0;
+}
+
+.deck-count-number {
+    font-size: 1.5rem; /* text-2xl */
+    color: #2563eb; /* text-blue-600 */
+    font-weight: 700;
+}
+
+.deck-3d-area {
+    flex: 0 0 auto; /* Auto height based on content */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    margin-bottom: 1.5rem; /* mb-6 */
+    perspective: 1000px; /* perspective style */
+}
+
+.deck-stack {
+    /* 160px x 224px per reference */
+    width: 160px; 
+    height: 224px;
+    position: relative;
+    margin-bottom: 0;
+    cursor: pointer;
+}
+
+/* Deck Layers (3D Effect) */
+.deck-layer {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-color: #2c3e50; /* Fallback */
+    background-image: url('img/卡背.png');
+    background-size: cover;
+    background-position: center;
+    border-radius: var(--radius-lg);
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1); /* Subtle base shadow */
+    border: 3px solid white; /* White border for realistic card look */
+    /* Transforms set via JS */
+}
+
+.deck-top-card {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-color: #374151;
+    background-image: url('img/卡背.png');
+    background-size: cover;
+    background-position: center;
+    border-radius: var(--radius-lg);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); /* shadow-2xl */
+    z-index: 20;
+    transition: transform 0.2s;
+    border: 3px solid white; /* White border */
+    pointer-events: none; /* Let clicks pass through to container */
+}
+
+.deck-stack:hover .deck-top-card {
+    transform: scale(1.05); /* hover:scale-105 */
+    /* Remove translate Y, use scale */
+}
+
+.card-back-pattern {
+    display: none; /* Hide old pattern text "INSANE" */
+}
+
+/* Bottom Half: Deck List */
+.deck-list-panel {
+    flex: 1; /* h-1/2 equivalent */
+    background: white;
+    border-radius: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    box-shadow: none;
+    min-height: 0;
+}
+
+/* Deck List Header */
+.deck-list-header {
+    padding: 0.75rem 1rem; /* px-4 py-3 */
+    border-bottom: 1px solid var(--gray-200);
+    background: var(--gray-50);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.deck-list-header h3 {
+    font-weight: 900; /* font-black */
+    font-size: 1.125rem; /* text-lg */
+    margin: 0;
+    color: var(--primary);
+}
+
+.deck-grid {
+    flex: 1;
+    overflow-y: auto;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem; /* gap-3 */
+    padding: 1rem; /* p-4 */
+    background: var(--gray-50);
+    align-content: flex-start;
+}
+
+.deck-grid .card {
+    width: 80px; /* size="small" w-[80px] */
+    min-height: 112px; /* min-h-[112px] */
+    height: auto;
+    font-size: 10px;
+    padding: 0.5rem;
+    box-shadow: var(--shadow-md);
+    border: 1px solid var(--gray-200);
+}
+
+/* Hide extra info in small deck cards to match visual density if needed, 
+   but user asked to keep data. Small cards usually hide text. 
+   Reference `InsanityCard` renders name/en/trigger/effect even in small? 
+   No, InsanityCard.tsx has same layout.
+   Let's adjust text size for deck grid. */
+.deck-grid .card-title { font-size: 0.75rem; }
+.deck-grid .card-eng { font-size: 8px; margin-bottom: 2px; }
+.deck-grid .card-text { display: none; } /* Hide details in list? Reference shows them? 
+                                            Reference InsanityCard renders full content.
+                                            Let's keep text but very small. */
+.deck-grid .card-text { display: flex; font-size: 8px; gap: 2px; }
+.deck-grid .card-label { font-size: 8px; margin-bottom: 0; }
+.deck-grid .card-content-text { line-height: 1.1; }
+
+.empty-msg {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border: 4px dashed var(--gray-300);
+    border-radius: var(--radius-lg);
+    color: var(--gray-400);
+    text-align: center;
+    padding: 2rem;
+    margin: 0;
+}
+
+
+/* --- Right: Library Section --- */
+.library-section {
+    flex: 0 0 360px; /* Default Width */
+    min-width: 200px;
+    max-width: 500px;
+    background: white;
+    border-left: 1px solid var(--gray-200);
+    display: flex;
+    flex-direction: column;
+    box-shadow: var(--shadow-sm);
+    z-index: 20;
+    position: relative;
+    overflow: visible; /* CRITICAL for resizer to be grabable if it protrudes */
+}
+
+/* Resizer Handle */
+.library-resizer {
+    position: absolute;
+    left: -10px; /* Shift left to straddle border */
+    top: 0;
+    width: 20px; /* Wide hit area */
+    height: 100%;
+    cursor: col-resize;
+    z-index: 9999; /* Highest Z-Index */
+    background: transparent;
+    /* border-left: 1px solid red; Debugging aid if needed */
+}
+.library-resizer:hover {
+    background: rgba(41, 128, 185, 0.1); /* Subtle hint */
+}
+
+.library-section.compact {
+    /* flex: 0 0 220px; Removed to allow JS resizing. Width is set by setLibraryMode now. */
+}
+
+.library-header {
+    display: flex;
+    justify-content: flex-start; /* Align start */
+    align-items: center;
+    padding: 0.5rem 1rem; /* Reduced vertical padding (1rem -> 0.5rem) */
+    background: var(--gray-50);
+    border-bottom: none; /* Removed border */
+    margin-bottom: 0;
+    gap: 10px; 
+    height: auto; 
+}
+
+.library-header h2 { 
+    margin: 0; 
+    font-size: 1.125rem; /* Match .column-header h3 text-lg */
+    font-weight: 900; /* Match font-black */
+    color: var(--foreground); /* Use standard color */
+    line-height: 1; /* Tighter line height */
+}
+
+.filter-box {
+    padding: 0 1rem 0.5rem 1rem; /* px-4 pb-2 */
+    background: var(--gray-50); /* Extend header bg */
+    border-bottom: 1px solid var(--gray-200); /* Border moved here */
+    display: flex;
+}
+
+#category-filter {
+    padding: 0 0.25rem;
+    font-size: 0.75rem; /* Smaller font */
+    border: 1px solid var(--gray-300);
+    border-radius: var(--radius-md);
+    color: var(--gray-500); /* Gray color */
+    background: white;
+    outline: none;
+    cursor: pointer;
+    min-width: 0; /* Allow shrinking */
+    width: auto;
+    height: 24px;
+}
+#category-filter:hover {
+    border-color: var(--gray-400);
+    color: var(--gray-700);
+}
+
+/* Expanded View (Default Grid) */
+.library-grid.expanded-view {
+    display: grid;
+    /* Use auto-fill to allow 1 or 2 columns based on container width */
+    grid-template-columns: repeat(auto-fill, var(--card-width));
+    justify-content: center; /* Center the grid */
+    gap: 0.75rem; /* gap-3 */
+    padding: 1.5rem; /* Increased padding from 1rem */
+    overflow-y: auto; /* Enable scrolling */
+    flex-grow: 1; /* Ensure it takes up remaining space */
+    min-height: 0; /* Important for flex child scrolling */
+}
+
+/* Library Margins Fix */
+.library-grid.compact-view {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Center cards */
+    padding: 20px 20px 250px 20px; /* Increased side padding */
+    overflow-y: auto; /* Enable scrolling */
+    flex-grow: 1;
+    min-height: 0;
+}
+
+/* Removed duplicate card definition */
+
+
+/* --- Common Card Styles --- */
+.card {
+    width: var(--card-width);
+    height: var(--card-height);
+    background: white;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    font-size: 12px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    cursor: pointer;
+    position: relative;
+    transition: all 0.2s;
+    flex-shrink: 0;
+}
+
+.card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    border-color: var(--accent-blue);
+}
+
+.card-title { font-weight: bold; text-align: center; margin-bottom: 5px; font-size: 1.1em; font-family: var(--font-serif); }
+.card-eng { font-size: 10px; color: #7f8c8d; text-align: center; border-bottom: 1px solid #eee; margin-bottom: 5px; padding-bottom: 2px; }
+.card-text { overflow: visible; flex: 1; } /* No scroll */
+.card-trigger, .card-effect { margin-bottom: 5px; line-height: 1.4; }
+.card-remark { color: var(--accent-red); font-style: italic; font-size: 10px; margin-top: auto; }
+
+/* In-Deck State for Library Cards */
+.card.in-deck {
+    background-color: #f3f4f6; /* Light gray bg */
+    border-color: #d1d5db; /* Gray border */
+    /* opacity: 0.9; REMOVED transparency to prevent bleed-through in stack mode */
+}
+.card.in-deck .card-title {
+    color: #4b5563; /* Darker gray text */
+}
+.card.in-deck:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    border-color: #9ca3af;
+}
+
+/* Deck Grid Specifics */
+.deck-grid {
+    flex: 1;
+    overflow-y: auto;
+    display: flex;
+    flex-wrap: wrap; /* Tile layout */
+    gap: 8px;
+    padding: 10px;
+    align-content: flex-start;
+}
+
+.deck-grid .card {
+    /* Smaller size for deck contents */
+    width: 120px;
+    height: 168px; /* Maintain ratio roughly */
+    font-size: 10px;
+    margin-bottom: 0; /* No negative margin */
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    transform: none; /* Reset potential transforms */
+}
+
+.deck-grid .card:hover {
+    transform: translateY(-2px);
+    z-index: 10;
+}
+
+.deck-grid .card-title {
+    font-size: 0.9rem;
+    margin-bottom: 2px;
+}
+.deck-grid .card-eng { display: none; } /* Hide english to save space */
+.deck-grid .card-trigger, 
+.deck-grid .card-effect { 
+    margin-bottom: 2px; 
+    font-size: 9px; 
+    line-height: 1.2;
+}
+
+/* Drag Handle */
+.drag-handle {
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    width: 20px;
+    height: 20px;
+    background: rgba(0,0,0,0.1);
+    border-radius: 4px;
+    cursor: grab;
+    display: none; /* Hidden by default */
+    justify-content: center;
+    align-items: center;
+    z-index: 20;
+    font-size: 12px;
+    color: #555;
+}
+.drag-handle:hover {
+    background: rgba(0,0,0,0.2);
+}
+.card:hover .drag-handle {
+    display: flex; /* Show on hover */
+}
+
+.card.dragging {
+    opacity: 0.5;
+    border: 2px dashed #999;
+}
+
+/* Card Close Button (X) */
+.card-close-btn {
+    position: absolute;
+    top: 2px;
+    right: 2px;
+    width: 20px;
+    height: 20px;
+    background: rgba(192, 57, 43, 0.8);
+    color: white;
+    border-radius: 50%;
+    cursor: pointer;
+    display: none; /* Hidden by default */
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+    font-size: 14px;
+    z-index: 25;
+    line-height: 1;
+}
+.card-close-btn:hover {
+    background: rgba(192, 57, 43, 1);
+}
+.card:hover .card-close-btn {
+    display: flex; /* Show on hover */
+}
+
+/* Compact View (Stack) - Library Only */
+.library-grid.compact-view {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 20px;
+    padding-bottom: 250px;
+}
+
+.library-grid.compact-view .card {
+    /* Library cards in compact mode match tiled mode size */
+    width: 160px !important;
+    min-width: 160px !important;
+    max-width: 100% !important; /* Ensure it fits in library */
+    height: 224px !important;
+    margin-bottom: -180px; /* Adjusted overlap for smaller cards */
+    font-size: 10px;
+    transition: all 0.2s ease; /* Faster transition */
+}
+
+/* Library Cards Specifics to Ensure Scroll works */
+.library-grid .card {
+    /* Ensure no transform/overlap blocks the scroll */
+}
+
+/* For Compact View, we need to ensure the hovered card is fully interactive */
+.library-grid.compact-view .card:hover {
+    margin-bottom: 10px;
+    margin-top: -10px;
+    z-index: 1000;
+    transform: scale(1.05);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+    /* Ensure pointer events are active for scrolling */
+    pointer-events: auto;
+}
+
+/* Ensure text area inside library cards is scrollable */
+.library-grid .card-text {
+    /* Explicitly allow pointer events */
+    pointer-events: auto;
+}
+
+.library-grid.compact-view .card-title {
+    font-size: 0.8rem;
+}
+
+/* Expanded View (Default Grid) - Library Only */
+.library-grid.expanded-view {
+    display: flex;
+    flex-wrap: wrap; /* Tiled */
+    gap: 10px;
+    align-content: flex-start;
+}
+
+.library-grid.expanded-view .card {
+    /* Keep standard size for library */
+    width: 160px; /* Slightly smaller than full but readable */
+    height: 224px;
+    font-size: 11px;
+}
+.draw-overlay {
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0,0,0,0.85);
+    z-index: 500;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.draw-content {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+    max-width: 80%;
+    max-height: 80%;
+    display: flex;
+    flex-direction: column;
+}
+.drawn-cards-grid {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+    margin: 20px 0;
+    flex-wrap: wrap;
+}
+.drawn-cards-grid .card {
+    width: 180px;
+    height: 252px;
+    font-size: 13px;
+}
+.hidden { display: none !important; }
+
+/* Modal */
+.modal {
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0,0,0,0.4);
+    backdrop-filter: blur(4px); /* Blur effect */
+    z-index: 2000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s;
+}
+.modal:not(.hidden) {
+    opacity: 1;
+    pointer-events: auto;
+}
+.modal.hidden { display: flex; opacity: 0; pointer-events: none; } /* Override display:none to allow transition */
+
+.modal-content {
+    background: white;
+    padding: 25px;
+    border-radius: 12px;
+    width: 320px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+    transform: translateY(20px);
+    transition: transform 0.3s;
+}
+.modal:not(.hidden) .modal-content {
+    transform: translateY(0);
+}
+
+.modal-content h3 {
+    margin: 0;
+    font-size: 1.2rem;
+    color: var(--primary-dark);
+    text-align: center;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 10px;
+}
+
+.modal-content input {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 1rem;
+    outline: none;
+    transition: border-color 0.2s;
+}
+.modal-content input:focus {
+    border-color: var(--accent-blue);
+}
+
+.modal-actions {
+    display: flex;
+    justify-content: space-between;
+    gap: 15px;
+}
+
+.modal-actions button {
+    flex: 1;
+    padding: 8px 15px;
+    cursor: pointer;
+    border-radius: 6px;
+    font-weight: bold;
+    transition: all 0.2s;
+}
+
+#modal-cancel-btn {
+    background: #f0f0f0;
+    border: 1px solid #ddd;
+    color: #555;
+}
+#modal-cancel-btn:hover { background: #e0e0e0; }
+
+#modal-confirm-btn {
+    background: var(--accent-blue);
+    border: none;
+    color: white;
+}
+#modal-confirm-btn:hover { background: #3498db; }
+
+/* Custom Context Menu */
+.context-menu {
+    position: fixed;
+    background: white;
+    border: 1px solid #ccc;
+    box-shadow: 2px 2px 5px rgba(0,0,0,0.2);
+    border-radius: 4px;
+    z-index: 3000;
+    padding: 5px 0;
+    min-width: 120px;
+}
+.context-menu-item {
+    padding: 8px 15px;
+    cursor: pointer;
+    font-size: 13px;
+    color: #333;
+}
+.context-menu-item:hover {
+    background: #f0f0f0;
+}
+.context-menu-item.danger {
+    color: var(--accent-red);
+}
+
+/* Icon Btn */
+.icon-btn {
+    background: transparent;
+    border: 1px solid #999;
+    border-radius: 50%;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    font-size: 16px;
+    color: #333;
+}
+.icon-btn:hover { background: #eee; }
+
+/* Text Danger Btn */
+.text-danger-btn {
+    background: transparent;
+    border: none;
+    color: var(--accent-red);
+    cursor: pointer;
+    font-size: 0.9rem;
+    text-decoration: underline;
+}
+.text-danger-btn:hover { color: #e74c3c; }
+
+/* Deck Header Tools - Random Button Style */
+#add-random-btn {
+    background: transparent;
+    color: var(--accent-blue);
+    border: 1px solid var(--accent-blue);
+    border-radius: var(--radius-md);
+    padding: 0.25rem 0.75rem; /* size="sm" equivalent */
+    font-size: 0.875rem;
+    font-weight: 500;
+    transition: all 0.2s;
+    cursor: pointer;
+}
+#add-random-btn:hover {
+    background: #eff6ff; /* blue-50 */
+}
+
+/* Card Content Layout - Unified Size */
+.card {
+    width: var(--card-width); /* Fixed Width */
+    height: var(--card-height); /* Fixed Height */
+    flex-shrink: 0; /* Prevent shrinking */
+    padding: 0.5rem 1rem 1rem 1rem; /* Reduced top padding (1rem -> 0.5rem) */
+    border-width: 2px; /* Thicker border */
+    overflow: hidden; /* Ensure content stays in */
+    display: flex; /* CRITICAL: Use Flexbox */
+    flex-direction: column; /* CRITICAL: Stack children vertically */
+    /* ... existing styles ... */
+}
+
+.card-title {
+    font-family: var(--font-serif);
+    font-weight: 700; /* font-bold */
+    font-size: 0.875rem; /* text-sm */
+    margin-bottom: 0; /* mb-0.5 -> 0 */
+    text-align: center; /* Center title */
+    line-height: 0.8; /* Tighter line height (reduced from 1.1) */
+    padding: 2px 0;
+}
+
+.card-eng {
+    font-size: 10px; /* text-[10px] */
+    color: var(--gray-500);
+    text-align: center; /* Center english */
+    border-bottom: none;
+    margin-bottom: 0.25rem; /* mb-2 -> mb-1 */
+    padding-bottom: 0;
+    line-height: 1; /* Reduce line height */
+}
+
+.card-text {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 0.125rem; /* Reduced gap space-y-1.5 -> ~0.5 */
+    font-size: 0.75rem; /* text-xs */
+    overflow-y: auto; /* Always enable scroll logic to prevent layout shift */
+    padding-right: 2px; /* Space for scrollbar */
+    min-height: 0; /* CRITICAL for flex scrolling to work */
+}
+
+/* Scrollbar styling - Hidden by default, visible on hover */
+.card-text::-webkit-scrollbar { 
+    width: 6px; 
+    height: 6px;
+    display: block; 
+}
+.card-text::-webkit-scrollbar-track {
+    background: transparent;
+}
+.card-text::-webkit-scrollbar-thumb {
+    background: transparent; /* Hidden by default */
+    border-radius: 4px;
+    transition: background-color 0.2s;
+}
+.card:hover .card-text::-webkit-scrollbar-thumb {
+    background: rgba(0,0,0,0.3); /* Visible on hover */
+}
+.card:hover .card-text::-webkit-scrollbar-thumb:hover {
+    background: rgba(0,0,0,0.5); /* Darker on interact */
+}
+
+.card-trigger-section, .card-effect-section {
+    /* Wrappers for layout */
+}
+
+.card-label {
+    font-weight: 600; /* font-semibold */
+    margin-bottom: 0; /* mb-0.5 -> 0 */
+    font-size: 11px; /* text-[11px] */
+    color: var(--primary);
+    line-height: 1.1;
+}
+
+.card-content-text {
+    color: #374151; /* gray-700 */
+    line-height: 1.15; /* Reduced leading-snug -> 1.15 */
+    margin: 0;
+    text-align: left; /* Keep content left aligned for readability */
+    margin-bottom: 0.25rem; /* Add small separation between sections */
+}
+
+/* Override previous styles */
+.card-trigger, .card-effect { display: none; } /* Hide old p tags if using new structure */
