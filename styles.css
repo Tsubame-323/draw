@@ -66,8 +66,8 @@ h1, h2, h3, h4 {
 .app-container {
     display: flex;
     flex-direction: column;
-    height: 100vh;
-    width: 100vw;
+    height: 100%;
+    width: 100%;
 }
 
 /* --- App Header --- */
@@ -576,22 +576,25 @@ h1, h2, h3, h4 {
     flex-direction: column;
     padding: 0; /* Remove padding */
     gap: 0; /* Remove gap */
-    overflow: hidden;
+    overflow: visible; /* Allow deck to overlap header */
 }
 
 /* Top Half: 3D Deck Area */
 .deck-pile-panel {
-    flex: 0 0 50%; /* h-1/2 */
-    background: linear-gradient(to bottom, var(--gray-100), var(--gray-200)); /* bg-gradient-to-b from-gray-100 to-gray-200 */
-    border-radius: 0; /* Remove radius */
-    padding: 2rem; /* p-8 */
+    flex: 0 0 65%; /* Increased from 50% to reduce bottom list height */
+    background: linear-gradient(to bottom, var(--gray-100), var(--gray-200));
+    border-radius: 0;
+    padding: 2rem;
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
-    box-shadow: none; /* Remove shadow */
-    border-bottom: 2px solid var(--gray-300); /* border-b-2 border-gray-300 */
+    justify-content: flex-start; /* Changed from center to allow pushing down */
+    padding-top: 15vh; /* Push content down by approx 1/3 of view height available */
+    box-shadow: none;
+    border-bottom: 2px solid var(--gray-300);
     min-height: 0;
+    z-index: 200;
+    position: relative;
 }
 
 .panel-header {
@@ -627,7 +630,7 @@ h1, h2, h3, h4 {
     align-items: center;
     justify-content: center;
     width: 100%;
-    margin-bottom: 1.5rem; /* mb-6 */
+    margin-bottom: 0; /* Removed mb-6 */
     perspective: 1000px; /* perspective style */
 }
 
