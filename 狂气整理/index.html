@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>狂气抽卡网站</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- 顶部：房间控制 (Header) -->
+        <header class="app-header">
+            <div class="header-left">
+                <h1>Insane TRPG 狂气管理</h1>
+                <div class="header-separator"></div>
+                <h2 id="current-room-name" class="room-name-display">未选择</h2>
+            </div>
+            
+            <div class="header-center">
+                <!-- Create Room -->
+                <div style="display:flex; gap:0.5rem; align-items: center;">
+                    <label style="display: flex; align-items: center; gap: 4px; color: white; font-size: 0.875rem; cursor: pointer;">
+                        <input type="checkbox" id="big-format-toggle" style="cursor: pointer;">
+                        大判
+                    </label>
+                    <input type="text" id="room-name-input" placeholder="新房间名" class="room-select" style="width:150px; background:rgba(255,255,255,0.1); color:white; border:1px solid rgba(255,255,255,0.2);">
+                    <button id="create-room-btn" class="btn-primary-blue">
+                        <span style="font-size:1.2em; line-height:1;">+</span> 新建
+                    </button>
+                </div>
+
+                <!-- Switch Room -->
+                <select id="room-select-dropdown" class="room-select">
+                    <option value="">-- 切换房间 --</option>
+                </select>
+
+                <!-- Delete Room -->
+                <button id="delete-room-btn" class="btn-danger-red" title="删除当前房间">
+                    <span style="font-size:1.2em; line-height:1;">×</span>
+                </button>
+            </div>
+        </header>
+
+        <!-- 主体内容 (3列布局) -->
+        <div id="no-room-msg" class="empty-state">
+            请新建或选择一个房间以开始
+        </div>
+
+        <div id="active-room-content" class="main-content hidden">
+            <div class="game-layout">
+                <!-- 左侧：角色列表 (Character Column) -->
+                <div class="character-column">
+                    <div class="column-header">
+                        <h3>角色列表</h3>
+                        <button id="add-char-btn" title="新建角色">+</button>
+                    </div>
+                    <div id="character-list" class="character-list-vertical">
+                        <!-- 角色卡片 (Person UI) -->
+                    </div>
+                </div>
+
+                <!-- 中间：游戏桌 (Deck & Table) -->
+                <div class="table-section">
+                    <!-- 上半部分：3D 牌堆 -->
+                    <div class="deck-pile-panel">
+                        <div class="deck-3d-area">
+                            <div id="deck-3d-stack" class="deck-stack" title="点击抽卡 (优先发给选中角色)">
+                                <div class="deck-top-card">
+                                    <!-- No text -->
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="deck-info-section">
+                            <p class="deck-count-text">
+                                牌堆数量: <span id="deck-count" class="deck-count-number">0</span>
+                            </p>
+                            <button id="add-random-btn">随机加入</button>
+                        </div>
+
+                        <!-- Hidden tools for JS compatibility (values read from modal) -->
+                        <div class="random-tools" style="display:none">
+                            <input type="number" id="random-count-input" value="5">
+                            <select id="random-range-select">
+                                <option value="all">全范围</option>
+                            </select>
+                        </div>
+
+                        <!-- 抽卡结果弹窗 -->
+                        <div id="draw-result-overlay" class="draw-overlay hidden">
+                            <div class="draw-content">
+                                <h3>抽卡结果</h3>
+                                <div id="drawn-cards-display" class="drawn-cards-grid"></div>
+                                <button id="close-draw-btn">关闭</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 下半部分：牌堆内容列表 -->
+                    <div class="deck-list-panel">
+                        <div class="deck-list-header">
+                            <h3>牌堆内容（从上往下）</h3>
+                            <div style="display:flex; gap:0.5rem; align-items: center;">
+                                <button id="shuffle-deck-btn" class="btn-primary-blue" style="font-size:0.875rem; padding: 0.25rem 0.75rem;">
+                                    洗牌
+                                </button>
+                                <button id="clear-deck-btn" class="btn-danger-red" style="font-size:0.875rem; padding: 0.25rem 0.75rem;">
+                                    清空牌堆
+                                </button>
+                            </div>
+                        </div>
+                        <div id="deck-list" class="deck-grid">
+                            <p class="empty-msg">
+                                牌堆为空<br>
+                                <span style="font-size:0.8em; margin-top:0.5em;">从右侧狂气库添加卡牌</span>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 右侧：狂气库 (Library) -->
+                <div id="library-section" class="library-section">
+                    <div id="library-resizer" class="library-resizer"></div>
+                    <div class="library-header">
+                        <h2>狂气库</h2>
+                        <span id="library-mode-label" class="library-mode-label">平铺模式</span>
+                        <!-- Hidden toggle btn for compatibility -->
+                        <button id="toggle-library-view-btn" class="view-toggle-btn" style="display:none">
+                            <span class="icon">📑</span>
+                        </button>
+                    </div>
+                    
+                    <div class="filter-box">
+                        <select id="category-filter">
+                            <option value="all">全部狂气</option>
+                        </select>
+                    </div>
+
+                    <div id="madness-container" class="library-grid expanded-view">
+                        <!-- Library Cards -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="char-modal" class="modal hidden">
+        <div class="modal-content">
+            <h3 id="modal-title">新建角色</h3>
+            <input type="text" id="modal-char-name" placeholder="请输入角色名称">
+            <div class="modal-actions">
+                <button id="modal-cancel-btn">取消</button>
+                <button id="modal-confirm-btn" class="primary-btn">确定</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 随机加入对话框 (Dialog) -->
+    <div id="random-dialog" class="modal hidden">
+        <div class="modal-content" style="max-width: 400px; padding: 1.5rem; gap: 1rem;">
+            <div class="dialog-header" style="text-align: left; margin-bottom: 0.5rem;">
+                <h3 style="margin: 0; font-size: 1.125rem; font-weight: 600;">随机加入卡牌</h3>
+                <p style="margin: 0; font-size: 0.875rem; color: #6b7280; margin-top: 0.25rem;">
+                    选择要加入牌堆的卡牌数量和分组。
+                </p>
+            </div>
+            
+            <div style="display: flex; flex-direction: column; gap: 1rem;">
+                <div>
+                    <label style="display: block; font-size: 0.875rem; font-weight: 500; margin-bottom: 0.5rem;">数量</label>
+                    <input type="number" id="dialog-random-count" value="5" min="1" 
+                           style="width: 100%; padding: 0.5rem; border: 1px solid #d1d5db; border-radius: 0.375rem;">
+                </div>
+                <div>
+                    <label style="display: block; font-size: 0.875rem; font-weight: 500; margin-bottom: 0.5rem;">分组</label>
+                    <select id="dialog-random-category" 
+                            style="width: 100%; padding: 0.5rem; border: 1px solid #d1d5db; border-radius: 0.375rem; background: white;">
+                        <option value="all">全部分组</option>
+                        <!-- Categories populated by JS -->
+                    </select>
+                </div>
+            </div>
+
+            <div class="modal-actions" style="margin-top: 0.5rem;">
+                <button id="dialog-cancel-btn" style="border: 1px solid #d1d5db; background: white; color: #374151;">取消</button>
+                <button id="dialog-confirm-btn" style="background: #111827; color: white;">确认</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 旧的随机工具 (Hidden) -->
+    <div class="random-tools" style="display:none">
+        <input type="number" id="random-count-input" value="1">
+        <select id="random-range-select">
+            <option value="all">全范围</option>
+        </select>
+        <button id="add-random-btn-hidden">随机加入</button>
+    </div>
+
+    <!-- Global Tooltip Portal -->
+    <div id="tooltip-portal"></div>
+    
+    <script src="data.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
